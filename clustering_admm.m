@@ -6,6 +6,7 @@ X = rand(10,2); % data matrix
 % Setting the initial value
 alpha = X;
 L = make_combination_matrix(n);
+%L = make_delaunay_matrix(X);
 Z = L*alpha;
 U = zeros(size(Z));
 lambda = 0.05;
@@ -14,18 +15,18 @@ rho = 1;
 % plotting the data
 figure(1); plot(X(:,1), X(:,2), 'bo');
 
-for i=1:30
+for ite=1:100
     
 obj = 1/2 * norm(alpha-X,2) + lambda*norm(L*X,1);
-fprintf('Iteration %d: %f\n', i, obj);
+fprintf('Iteration %d: %f\n', ite, obj);
 
 % ADMM
-alpha = inv(eye(n) + rho*(L'*L)) * (X + rho*L'*(Z-U));
+alpha = (eye(n) + rho*(L'*L)) \ (X + rho*L'*(Z-U));
 T = L*alpha + U;
 Z = sign(T) .* max(0, abs(L*alpha+U) - lambda/rho);
 U = T - Z;
 
-% plot the position of alpha
+% plotting the position of alpha
 figure(1);
 hold on;
 plot(alpha(:,1), alpha(:,2), 'r+');
@@ -33,3 +34,9 @@ hold off;
 drawnow;
 
 end
+
+% plotting the last iterated position of alpha
+figure(1);
+hold on
+plot(alpha(:,1), alpha(:,2), 'go', 'MarkerSize', 10, 'LineWidth', 2);
+hold off;
