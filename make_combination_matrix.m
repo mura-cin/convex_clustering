@@ -1,6 +1,6 @@
 function L = make_combination_matrix(n)
 
-L = zeros(nchoosek(n,2),n);
+L = sparse(zeros(nchoosek(n,2),n));
 
 i=1;
 for t=1:n

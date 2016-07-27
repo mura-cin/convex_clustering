@@ -10,7 +10,7 @@ cl = sort(cl,2);
 cl = unique(cl, 'rows');
 
 [cy,cx] = size(cl);
-L = zeros(cy, sy);
+L = sparse(zeros(cy, sy));
 for i=1:cy
     j = cl(i,:);
     L(i,j(1)) = -1;
